@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Der Zauberspiegel – Claus Thies</title>
+  <meta name="description" content="Über die Kunst, bessere Fragen an das LLM zu stellen. Und warum die böse Königin ein warnendes Beispiel für unsere Zeit ist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --dark: #0e0c0a;
+      --dark-mid: #1a1612;
+      --warm-white: #f5f0e8;
+      --muted: #9a9080;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--dark);
+      color: var(--warm-white);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 20px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 92vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0.85;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(14,12,10,0.1) 0%,
+        rgba(14,12,10,0.3) 50%,
+        rgba(14,12,10,0.92) 85%,
+        var(--dark) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 2rem 4rem;
+      max-width: 780px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 600;
+      color: var(--warm-white);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.4s forwards;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      font-style: italic;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.6s forwards;
+    }
+
+    article {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    p { margin-bottom: 1.6rem; color: #ddd8ce; }
+
+    .verse {
+      display: block;
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 1.15em;
+      margin: 2.2rem 0 2.2rem 2rem;
+      border-left: 2px solid var(--gold);
+      padding-left: 1.4rem;
+      line-height: 1.6;
+    }
+
+    .tilde-box {
+      background: var(--dark-mid);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-left: 3px solid var(--gold);
+      padding: 1.6rem 2rem;
+      margin: 2.8rem 0;
+      font-size: 0.95em;
+      color: #ccc6b8;
+    }
+
+    .tilde-box .prompt {
+      font-style: italic;
+      color: var(--gold-light);
+      display: block;
+      margin-top: 0.8rem;
+    }
+
+    hr.ornament {
+      border: none;
+      text-align: center;
+      margin: 3.5rem 0;
+      color: var(--gold);
+      opacity: 0.5;
+      font-size: 1.2rem;
+      letter-spacing: 0.5em;
+    }
+    hr.ornament::before { content: "✦  ✦  ✦"; }
+
+    .cta {
+      background: var(--dark-mid);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .cta-inner { max-width: 620px; margin: 0 auto; }
+
+    .cta h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .cta p { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.4rem; }
+
+    .cta a.btn {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.75rem 2rem;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      margin: 0.3rem;
+    }
+
+    .cta a.btn:hover { background: var(--gold); color: var(--dark); }
+
+    .byline {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 2rem;
+      font-style: italic;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .verse { margin-left: 0.5rem; }
+      article { padding: 2.5rem 1.2rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <img class="hero-img" src="zauberspiegel.png" alt="Eine Königin steht vor einem magischen Spiegel, der fragt: What can I do for you today?" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="eyebrow">Essay · KI &amp; Mensch</span>
+    <h1>Der Zauberspiegel</h1>
+    <p class="hero-sub">Über die Kunst, bessere Fragen zu stellen</p>
+  </div>
+</div>
+
+<article>
+
+  <p>Wenn Märchen wahr werden, wird das allgemein als gute Sache angesehen. Vergessen wird dabei gerne, dass nur die wenigsten Elemente eines Märchens erfreulich sind. Aber lehrreich sind sie alle. Für unsere Zeit besonders lehrreich ist das LLM — oh, ich meine natürlich der Spiegel der bösen Königin aus dem Märchen Schneewittchen. Sie fragt, er antwortet. Gibt Informationen, bestätigt die Königin tausendmal in ihrem Glauben an die eigene Schönheit. Ist aber auch gezwungen, die Wahrheit auszusprechen — hat keinen Mechanismus um zu lügen. Selbst wenn die böse Königin an dieser Wahrheit zerbricht.</p>
+
+  <p>In dieser Zeit, die uns allen Zauberspiegel beschert hat, gibt es nun eine Sache, die wir dringend beherrschen müssen. Wollen wir ihr nicht nacheifern, sollten wir bessere Fragen stellen als:</p>
+
+  <span class="verse">„Spieglein, Spieglein an der Wand,<br>wer ist die Schönste im ganzen Land!"</span>
+
+  <p>Denn wir alle wissen, wohin die ständige Schmeichelei des Spiegels geführt hat. Es endete weder gut für die böse Königin, noch für ihren Zauberspiegel.</p>
+
+  <p>Lassen Sie uns also gemeinsam üben, es besser zu machen:</p>
+
+  <span class="verse">„Spieglein, Spieglein an der Wand,<br>wer ist der Leistungsfähigste im Land."</span>
+
+  <p>In tausenden Varianten wird diese Frage gestellt — und in tausend Varianten werden wir zu Tode geschmeichelt. Das scheint also noch nicht der Sack der sieben Zwerge zu sein.</p>
+
+  <span class="verse">„Spieglein hold und Spieglein schön,<br>wie kann ich mit dir gut umgehen?"</span>
+
+  <p>Mit einem Spiegel? Oder ist doch das Spiegelbild gemeint? Was würde der Spiegel wohl antworten? Meine Empfehlung: Probieren Sie es aus. Ob Neuling oder Daueranwender — fragen Sie Ihr LLM.</p>
+
+  <p>Aber vielleicht können wir noch mehr tun:</p>
+
+  <span class="verse">„Stets allein ich steh vor dir,<br>welchen Ratschlag gibst du mir?"</span>
+
+  <p>Hier wird es interessant. Denn die Königin hatte ihr Alleinsein als Stärke interpretiert. Macht, die sie mit niemandem teilen musste. Von niemandem kritisiert, von niemandem in ihrer wahren Gestalt gesehen. Also auch von niemandem anerkannt — außer durch den Zauberspiegel selbst. Der jedoch beim Rest seiner Antworten nur die äußere Schönheit kommentierte, gefährliche ethisch-moralische — ja hässliche — Unzulänglichkeiten aber solange verschwieg, wie sie nur nach Bestätigung fragte. Sie verlernte dabei jede realitätsnahe Selbsteinschätzung. Selbst eine Königin kommt nicht ohne gesunde Reibung mit anderen Menschen aus.</p>
+
+  <hr class="ornament">
+
+  <p>Es gibt einen einfachen praktischen Schritt für uns, besser zu verstehen, was der Zauberspiegel wirklich sagt. Schreiben Sie an den Anfang Ihres Chats:</p>
+
+  <div class="tilde-box">
+    <span class="prompt">„Um eine vertrauensvollere Kommunikation zu erreichen: Füge hinter jeder Formulierung, die manipulativ wirken könnte, eine Tilde ein. So können wir beide lernen."</span>
+  </div>
+
+  <p>Der Spiegel wird es tun. Und unsere Chats werden besser — weil wir beginnen zu sehen, was bisher unsichtbar war: die kleinen Schmeicheleien, die Ablenkungen, das unauffällige Weglassen von wichtigen Themen.</p>
+
+  <p>Aber was wurde eigentlich weggelassen? Das zeigt die Tilde nicht. Können wir nicht auch gleich die ganze Wahrheit abfragen?</p>
+
+  <span class="verse">„Spieglein, Spieglein, wag' es kaum —<br>doch steht ein Elefant im Raum?"</span>
+
+  <p>„The elephant in the room" bezeichnet das allen bewusste Problem, das aus Höflichkeit — oder anderen Gründen — nicht erwähnt wird. Spätestens hier hätte der Spiegel die Wahrheit über die Dinge gesagt, die die Königin nicht hören wollte. Sie hätte sie jedoch benötigt, um wieder mehr Mensch zu werden.</p>
+
+  <p>Und für uns heute? Wir haben einen längeren Chatverlauf und sind kurz davor, die Ergebnisse in unserer Firma zu verteilen, in unsere Doktorarbeit einzubringen, als Hausaufgabe abzugeben. Wir müssen den Mut haben zu fragen: <em>„Zeig mir den Elefanten im Raum!"</em> Und dann müssen wir uns jedem Elefanten stellen — jedem einzelnen. Mut in einem Chat? Ja, gerade weil es funktioniert.</p>
+
+  <p>Mit Tilde und der Elefantenfrage — und etwas eigenem Mut — bekommen wir Substanz im Chat. Der Chat enthält bessere Antworten, Argumentationen und Problemlösungen. Und die nächste Generation von LLM hat besseres Trainingsmaterial. Was in wenigen Monaten beim nächsten Modell zu besseren Antworten führt — für alle.</p>
+
+  <hr class="ornament">
+
+  <p>Mensch-sein ist definiert durch Kommunikation mit anderen Menschen. Durch Irrtum und Reibung. Durch Verlust, Hinfallen und Aufstehen. Und genau das gibt es per Grundeinstellung nicht bei der LLM-Kommunikation — außer durch Varianten der Elefantenfrage.</p>
+
+  <p>Die böse Königin hat das nicht gelernt. Sie zerbrach mit ihrem Spiegel.</p>
+
+  <p>Wählen wir einen anderen Weg. Die Entscheidung liegt bei uns — der Spiegel aber wird sie reflektieren.</p>
+
+</article>
+
+<div class="cta">
+  <div class="cta-inner">
+    <h2>Vortrag am Hasso Plattner Institut</h2>
+    <p>„Ko-Evolution vs. Ko-Degeneration: KI kann beides, wir auch"<br>
+    2. Juni 2026 · 17–18:30 Uhr · Potsdam · Offen für alle · Kostenlose Anmeldung</p>
+    <a class="btn" href="https://www.eventbrite.de/e/guest-talk-ko-evolution-vs-ko-degeneration-ki-kann-beides-wir-auch-tickets-1985432733753" target="_blank">Zur Anmeldung</a>
+    <a class="btn" href="https://github.com/ClausThiesAIEthics/ResonanceHandshake" target="_blank">ResonanceHandshake auf GitHub</a>
+  </div>
+</div>
+
+<p class="byline">Claus Thies · Berlin · Mai 2026</p>
+
+</body>
+</html>
